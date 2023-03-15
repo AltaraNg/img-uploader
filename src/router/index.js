@@ -1,25 +1,42 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import HomeView from '@/views/HomeView.vue';
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
+    path: "/",
+    name: "home",
     component: HomeView,
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    meta: {
+      title: "Altara Credit - Image Uploader",
+      metaTags: [
+        {
+          name: "description",
+          content: "This is an app to upload images to S3",
+        },
+        {
+          property: "og:description",
+          content: "This is an app to upload images to S3",
+        },
+      ],
+    },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  // Get the page title from the route meta data that we have defined
+  // See further down below for how we setup this data
+  const title = to.meta.title;
+  // If the route has a title, set it as the page title of the document/page
+  if (title) {
+    document.title = title;
+  }
+  // Continue resolving the route
+  next();
 });
 
 export default router;

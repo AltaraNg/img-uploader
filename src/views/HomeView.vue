@@ -1,18 +1,19 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="flex justify-center items-center w-full h-full">
+    <div v-if="!photo">
+      <Camera @photo-taken="photo = $event" />
+    </div>
+    <div v-else>
+      <img :src="photo" class="max-w-full max-h-full" />
+      <Uploader @photo-uploaded="photo = $event" />
+    </div>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+<script setup>
+import { ref } from "vue";
+import Camera from "@/components/Camera.vue";
+import Uploader from "@/components/Uploader.vue";
 
-export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld,
-  },
-};
+const photo = ref(null);
 </script>
